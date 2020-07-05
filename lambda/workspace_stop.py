@@ -9,7 +9,6 @@ response = client.describe_workspaces()
 def lambda_handler(event, context):
     #Looping over all workspaces in response
     for workspace in response["Workspaces"]:
-
         #Some temporary variables for each workspace
         RunningMode = workspace["WorkspaceProperties"]["RunningMode"]
         workspaceId = str(workspace["WorkspaceId"])
@@ -24,4 +23,4 @@ def lambda_handler(event, context):
                     'RunningModeAutoStopTimeoutInMinutes' : 60
                 }
             )
-            
+            print(f"{workspaceId} modified")

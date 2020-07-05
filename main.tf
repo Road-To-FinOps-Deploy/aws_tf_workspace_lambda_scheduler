@@ -17,7 +17,7 @@ resource "aws_lambda_function" "workspace_start" {
   role             = aws_iam_role.iam_role_for_workspace_start_stop.arn
   handler          = "workspace_start.lambda_handler"
   source_code_hash = data.archive_file.workspace_start_zip.output_base64sha256
-  runtime          = "python2.7"
+  runtime          = "python3.6"
   memory_size      = "512"
   timeout          = "150"
 }
@@ -28,7 +28,7 @@ resource "aws_lambda_function" "workspace_stop" {
   role             = aws_iam_role.iam_role_for_workspace_start_stop.arn
   handler          = "workspace_stop.lambda_handler"
   source_code_hash = data.archive_file.workspace_stop_zip.output_base64sha256
-  runtime          = "python2.7"
+  runtime          = "python3.6"
   memory_size      = "512"
   timeout          = "150"
 }

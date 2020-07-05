@@ -11,8 +11,8 @@ def lambda_handler(event, context):
 
      #filter tag: <<start>> and <<stopped>> EC2 instances
     filters = [{
-                'Name': 'tag:start', 
-                'Values': ['true']
+                'Name': 'tag:nightly', 
+                'Values': ['onoff']
             },
             {
                 'Name': 'instance-state-name', 
