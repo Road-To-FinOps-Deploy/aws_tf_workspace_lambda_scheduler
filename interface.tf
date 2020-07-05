@@ -9,3 +9,9 @@ variable "workspace_start_cron" {
 variable "workspace_stop_cron" {
   default = "cron(0 20 ? * MON-FRI *)"
 }
+
+variable "function_prefix" {
+  description = "Prefix for the name of the resources created"
+  default     = ""
+}
+
