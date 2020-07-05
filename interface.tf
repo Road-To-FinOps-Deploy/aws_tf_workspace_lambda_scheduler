@@ -12,6 +12,6 @@ variable "workspace_stop_cron" {
 
 variable "function_prefix" {
   description = "Prefix for the name of the resources created"
-  default     = "git"
+  default     = ""
 }
 
