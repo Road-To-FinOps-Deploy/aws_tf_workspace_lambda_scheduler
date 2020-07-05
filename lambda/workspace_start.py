@@ -1,20 +1,15 @@
 # Importing the AWS SDK
 import boto3
+import logging
 
+log = logging.getLogger()
 # Creading workspace client object
-client = session.client("workspaces")
+client = boto3.client("workspaces")
 
 # Description of all running workspace
 response = client.describe_workspaces()
 
-
 def lambda_handler(event, context):
-
-    # filter tag: <<start>> and <<stopped>> EC2 instances
-    filters = [
-        {"Name": "tag:nightly", "Values": ["onoff"]},
-        {"Name": "instance-state-name", "Values": ["stopped"]},
-    ]
 
     # Looping over all workspaces in response
     for workspace in response["Workspaces"]:
@@ -24,18 +19,14 @@ def lambda_handler(event, context):
         username = str(workspace["UserName"])
         workspaceId = str(workspace["WorkspaceId"])
         runningMode = workspace["WorkspaceProperties"]["RunningMode"]
+        response_tags = client.describe_tags(ResourceId=workspaceId)
+        
+        if response_tags["TagList"] == [{"Key": "nightly", "Value": "onoff"}]:
+            log.info(f"{workspaceId} has the relevent tags")
+            # Starting turned off workspaces
+            if state == "STOPPED":
 
-        # Starting turned off workspaces
-        if state == "STOPPED":
-
-            # Starting workspace with the id stored in varibale workspaceId
-            client.start_workspaces(
-                StartWorkspaceRequests=[{"WorkspaceId": workspaceId}]
-            )
-        # Checking if the running mode is Auto Stop
-        if runningMode == "AUTO_STOP":
-            # Making the auto stop timeout 180 minutes
-            client.modify_workspace_properties(
-                WorkspaceId=workspaceId,
-                WorkspaceProperties={"RunningModeAutoStopTimeoutInMinutes": 180},
-            )
+                # Starting workspace with the id stored in varibale workspaceId
+                client.start_workspaces(
+                    StartWorkspaceRequests=[{"WorkspaceId": workspaceId}]
+                )
