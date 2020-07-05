@@ -82,10 +82,10 @@ resource "aws_cloudwatch_event_target" "workspace_stop_lambda" {
 }
 
 resource "aws_cloudwatch_log_group" "workspace_start_group" {
-  name = "/aws/lambda/workspace_start"
+  name = "/aws/lambda/${var.function_prefix}workspace_start"
 }
 
 resource "aws_cloudwatch_log_group" "workspace_stop_group" {
-  name = "/aws/lambda/workspace_stop"
+  name = "/aws/lambda/${var.function_prefix}workspace_stop"
 }
 
